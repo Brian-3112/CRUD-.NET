@@ -1,0 +1,94 @@
+﻿@model IEnumerable<TallerFinal.Models.Ventum>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<link href="~/css/proveedorstyle/index.css" rel="stylesheet" />
+<link href="~/css/cssglobal.css" rel="stylesheet" />
+
+<div class="row mt-5"><h1 class="titulo">Ventas</h1></div>
+<div class="row">
+
+    <style>
+        .col-sm-6 {
+            margin-left: 80px;
+        }
+
+    </style>
+    <div class="col-sm-6">
+        <a class=" btn btn-success d-block" asp-action="Create" asp-controller="Ventum" style=" width:200px; ">Agregar Venta</a>
+        <br />
+    </div>
+</div>
+
+<div class="tabla">
+    <table class="table caption-top " id="myTabla">
+        <caption>Lista de proveedores</caption>
+        <thead>
+            <tr>
+
+                
+                <th scope="col">Precio Total</th>
+                <th scope="col">Cliente</th>
+                <th scope="col">Producto</th>
+                <th scope="col">Fecha Entrega</th>
+                <th scope="col">Inhabilitar</th>
+                <th scope="col">Editar</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.PrecioTotal</td>
+                    <td>@item.Cliente.Nombre</td>
+                    <td>@item.Producto</td>
+                    <td>@item.Fecha</td>
+                    <td>
+                        @if (item.Estado == true)
+                        {
+                            <a data-bs-toggle="modal" data-bs-target="#exampleModal-@item.VentaId" style="text-decoration: none; outline: none;">
+                                <img class="centrarIcono estado" src="~/img/light_switch on.svg" />
+                            </a>
+                        }
+                        else
+                        {
+                            <a data-bs-toggle="modal" data-bs-target="#exampleModal-@item.VentaId" style="text-decoration: none; outline: none;">
+                                <img class="centrarIcono estado" src="~/img/light_switch off.svg" />
+                            </a>
+                        }
+
+                    </td>
+                    <td> <a asp-controller="Ventum" asp-action="Edit" asp-route-id="@item.VentaId" class="btn btn-info">Editar</a></td>
+
+
+                </tr>
+
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModal-@item.VentaId" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Confirmar acción</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p class="text-center">¿Deseas cambiar el estado de este registro?</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                                @* Aca se manda a llamar el método para eliminar el reguistro seleccionado *@
+                                <a asp-controller="Ventum" asp-action="Delete" asp-route-id="@item.VentaId" class="btn btn-success">
+                                    Si, totalmente seguro
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </tbody>
+    </table>
+</div> 
+
+
